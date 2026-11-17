@@ -1,0 +1,61 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Project Dependencies
+        run: npm ci
+
+      - name: Run Physics Verification Tests
+        run: npm test
+
+      - name: Setup Expo & EAS CLI
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build Standalone APK on Expo Cloud
+        if: env.EXPO_TOKEN != ''
+        run: eas build --platform android --profile preview --non-interactive
+
+      - name: Local Prebuild Fallback
+        if: env.EXPO_TOKEN == ''
+        run: |
+          npx expo prebuild --platform android
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon
+
+      - name: Upload Standalone APK Artifact
+        if: env.EXPO_TOKEN == ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: AeroLearn-Release-APK
+          path: android/app/build/outputs/apk/release/*.apk
