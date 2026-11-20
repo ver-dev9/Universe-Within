@@ -16,7 +16,7 @@ export const Section02DeepSpace: React.FC = () => {
         <div className="space-y-3 mb-6">
           <div className="inline-flex items-center gap-2 font-mono text-xs text-space-cyan tracking-widest uppercase">
             <Compass className="w-4 h-4" />
-            <span>CHAPTER 02 // THE DEEP COSMIC VOID</span>
+            <span>CHAPTER 01 // BEYOND THE ATMOSPHERE</span>
           </div>
           <h2 className="font-heading font-black text-3xl sm:text-5xl tracking-tight text-white">
             INFINITE. SILENT. EXTRAORDINARY.

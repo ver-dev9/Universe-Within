@@ -2,6 +2,7 @@ import React, { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { getSoftSprite } from '../../utils/softSprite';
+import { introRig } from '../../scenes/rigState';
 
 interface StarfieldProps {
   count?: number;
@@ -15,6 +16,7 @@ export const Starfield: React.FC<StarfieldProps> = ({
   reducedMotion = false,
 }) => {
   const pointsRef = useRef<THREE.Points>(null);
+  const materialRef = useRef<THREE.PointsMaterial>(null);
 
   // Generate stellar coordinates and spectral colors (O, B, A, F, G, K, M)
   const [positions, colors, sizes] = useMemo(() => {
@@ -55,6 +57,10 @@ export const Starfield: React.FC<StarfieldProps> = ({
   }, [count, radius]);
 
   useFrame((_, delta) => {
+    // Chapter 01 "stars form": opacity and a gentle inward settle follow the intro scrub.
+    const reveal = introRig.starReveal;
+    if (materialRef.current) materialRef.current.opacity = 0.88 * reveal;
+    if (pointsRef.current) pointsRef.current.scale.setScalar(1 + (1 - reveal) * 0.35);
     if (pointsRef.current && !reducedMotion) {
       // Extremely subtle slow celestial sphere drift
       pointsRef.current.rotation.y += delta * 0.005;
@@ -79,6 +85,7 @@ export const Starfield: React.FC<StarfieldProps> = ({
         />
       </bufferGeometry>
       <pointsMaterial
+        ref={materialRef}
         map={getSoftSprite()}
         alphaTest={0.01}
         size={1.6}

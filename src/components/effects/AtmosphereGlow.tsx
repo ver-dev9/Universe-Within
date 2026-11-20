@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { createAtmosphereMaterial } from '../../shaders/atmosphereShader';
 
 interface AtmosphereGlowProps {
@@ -15,6 +15,8 @@ export const AtmosphereGlow: React.FC<AtmosphereGlowProps> = ({
   power = 3.2,
 }) => {
   const mat = useMemo(() => createAtmosphereMaterial(color, intensity, power), [color, intensity, power]);
+  // Created outside JSX, so R3F will not dispose it for us.
+  useEffect(() => () => mat.dispose(), [mat]);
 
   return (
     <mesh>

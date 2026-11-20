@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { getEarthMaps } from './earthMaps';
 
 // Cache textures to avoid redundant canvas renders
 const textureCache: Record<string, THREE.CanvasTexture> = {};
@@ -9,6 +10,14 @@ const textureCache: Record<string, THREE.CanvasTexture> = {};
 export function getPlanetTexture(planetId: string): THREE.CanvasTexture {
   if (textureCache[planetId]) {
     return textureCache[planetId];
+  }
+
+  // Earth uses the noise-based map set (continents, clouds, city lights) since v2.
+  if (planetId === 'earth' || planetId === 'earth-clouds' || planetId === 'earth-night') {
+    const maps = getEarthMaps();
+    const t = planetId === 'earth' ? maps.day : planetId === 'earth-clouds' ? maps.clouds : maps.night;
+    textureCache[planetId] = t;
+    return t;
   }
 
   const canvas = document.createElement('canvas');
@@ -266,14 +275,15 @@ export function getPlanetTexture(planetId: string): THREE.CanvasTexture {
       });
 
       // Zonal jet-stream eddies and turbulent curl ripples
-      for (let j = 0; j < 300; j++) {
+      // v2: fewer, finer eddies so the belt/zone structure stays legible.
+      for (let j = 0; j < 140; j++) {
         const y = Math.random() * h;
-        ctx.strokeStyle = Math.random() > 0.5 ? 'rgba(255, 255, 255, 0.25)' : 'rgba(80, 30, 10, 0.3)';
-        ctx.lineWidth = 3 + Math.random() * 6;
+        ctx.strokeStyle = Math.random() > 0.5 ? 'rgba(255, 255, 255, 0.12)' : 'rgba(80, 30, 10, 0.16)';
+        ctx.lineWidth = 1 + Math.random() * 2.5;
         ctx.beginPath();
         ctx.moveTo(0, y);
-        for (let x = 0; x <= w; x += 30) {
-          ctx.lineTo(x, y + Math.sin((x / w) * Math.PI * 16 + j) * 8);
+        for (let x = 0; x <= w; x += 16) {
+          ctx.lineTo(x, y + Math.sin((x / w) * Math.PI * 16 + j) * 3);
         }
         ctx.stroke();
       }
