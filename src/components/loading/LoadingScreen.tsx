@@ -58,7 +58,7 @@ export const LoadingScreen: React.FC = () => {
       ctx.clearRect(0, 0, w, h);
 
       // Central point of light
-      const core = Math.min(t / 0.8, 1);
+      const core = Math.max(0, Math.min(t / 0.8, 1));
       const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, 60 * dpr * core + 1);
       g.addColorStop(0, `rgba(238,242,250,${0.95 * core})`);
       g.addColorStop(0.2, `rgba(105,217,239,${0.35 * core})`);

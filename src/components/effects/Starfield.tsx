@@ -1,6 +1,7 @@
 import React, { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { getSoftSprite } from '../../utils/softSprite';
 
 interface StarfieldProps {
   count?: number;
@@ -78,6 +79,8 @@ export const Starfield: React.FC<StarfieldProps> = ({
         />
       </bufferGeometry>
       <pointsMaterial
+        map={getSoftSprite()}
+        alphaTest={0.01}
         size={1.6}
         vertexColors
         transparent

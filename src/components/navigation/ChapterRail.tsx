@@ -17,7 +17,7 @@ export const ChapterRail: React.FC<ChapterRailProps> = ({ onNavigate }) => {
   return (
     <nav
       aria-label="Chapters"
-      className="hidden xl:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col items-end gap-3"
+      className="hidden 2xl:flex fixed right-4 top-1/2 -translate-y-1/2 z-40 flex-col items-end gap-3"
     >
       {liveChapters().map((c) => {
         const isActive = current?.number === c.number;

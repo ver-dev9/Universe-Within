@@ -1,6 +1,7 @@
 import React, { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { getSoftSprite } from '../../utils/softSprite';
 
 interface NebulaDustProps {
   reducedMotion?: boolean;
@@ -63,10 +64,12 @@ export const NebulaDust: React.FC<NebulaDustProps> = ({ reducedMotion = false })
         />
       </bufferGeometry>
       <pointsMaterial
-        size={4.0}
+        map={getSoftSprite()}
+        alphaTest={0.01}
+        size={6.0}
         vertexColors
         transparent
-        opacity={0.35}
+        opacity={0.22}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
         depthWrite={false}
