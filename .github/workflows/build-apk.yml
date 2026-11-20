@@ -1,8 +1,8 @@
 name: Build Android APK
 
+# v2: no longer runs on every push. The repo has no Capacitor/Android project,
+# so this job cannot succeed until one is added. Kept for manual runs.
 on:
-  push:
-    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:

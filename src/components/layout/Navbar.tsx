@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Volume2, VolumeX, Eye, EyeOff, Menu, X, Compass, Orbit, Globe, Sparkles, Scale, BookOpen, Layers } from 'lucide-react';
+import { Volume2, VolumeX, Eye, EyeOff, Menu, X, Gauge } from 'lucide-react';
+import { liveChapters, chapterForSection } from '../../data/chapters';
+import { useCosmosStore } from '../../store/useCosmosStore';
+import type { QualityLevel } from '../../utils/quality';
 
 interface NavbarProps {
   currentSectionId: string;
-  scrollProgress: number;
   onNavigate: (sectionId: string) => void;
   audioPlaying: boolean;
   onToggleAudio: () => void;
@@ -15,7 +17,6 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({
   currentSectionId,
-  scrollProgress,
   onNavigate,
   audioPlaying,
   onToggleAudio,
@@ -26,17 +27,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const navLinks = [
-    { id: 'intro', label: 'Intro', icon: Sparkles },
-    { id: 'deep-space', label: 'Deep Space', icon: Compass },
-    { id: 'solar-system', label: 'Solar System', icon: Orbit },
-    { id: 'planet-exploration', label: 'Planets', icon: Layers },
-    { id: 'earth-special', label: 'Earth', icon: Globe },
-    { id: 'beyond-planets', label: 'Phenomena', icon: Sparkles },
-    { id: 'scale-universe', label: 'Scale', icon: Scale },
-    { id: 'discoveries', label: 'Discoveries', icon: BookOpen },
-    { id: 'final-vista', label: 'Sources', icon: BookOpen },
-  ];
+  const quality = useCosmosStore((st) => st.quality);
+  const setQuality = useCosmosStore((st) => st.setQuality);
+  const activeChapter = chapterForSection(currentSectionId)?.number;
+
+  // Navigation is generated from the chapter registry; only built chapters appear.
+  const navLinks = liveChapters().map((c) => ({
+    id: c.sectionId,
+    number: c.number,
+    label: c.label,
+  }));
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
@@ -65,20 +65,18 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Desktop Navigation Links */}
           <div className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => {
-              const Icon = link.icon;
-              const isActive = currentSectionId === link.id;
+              const isActive = activeChapter === link.number;
               return (
                 <button
                   key={link.id}
                   onClick={() => onNavigate(link.id)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono tracking-wider transition-all duration-200 ${
-                    isActive
-                      ? 'bg-space-cyan/15 text-space-cyan border border-space-cyan/30 shadow-[0_0_12px_rgba(72,207,255,0.2)]'
-                      : 'text-space-muted hover:text-space-white hover:bg-space-blue/40'
+                  aria-current={isActive ? 'step' : undefined}
+                  className={`flex items-baseline gap-1.5 px-2.5 py-1.5 rounded-md text-[11px] font-mono tracking-wider transition-colors duration-200 ${
+                    isActive ? 'text-cosmos-white' : 'text-cosmos-muted hover:text-cosmos-white'
                   }`}
                 >
-                  <Icon className="w-3.5 h-3.5" />
-                  <span>{link.label}</span>
+                  <span className={isActive ? 'text-cosmos-cyan' : 'text-cosmos-muted/60'}>{String(link.number).padStart(2, '0')}</span>
+                  <span className="hidden 2xl:inline">{link.label}</span>
                 </button>
               );
             })}
@@ -147,11 +145,27 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </button>
 
+            {/* Rendering quality */}
+            <label className="hidden sm:flex items-center gap-1.5 p-2 rounded-xl border border-white/10 bg-space-blue/30 text-space-muted">
+              <Gauge className="w-4 h-4" aria-hidden="true" />
+              <span className="sr-only">Rendering quality</span>
+              <select
+                value={quality}
+                onChange={(e) => setQuality(e.target.value as QualityLevel, true)}
+                className="bg-transparent font-mono text-[11px] uppercase tracking-wider text-cosmos-white focus:outline-none cursor-pointer"
+              >
+                <option value="high" className="bg-cosmos-deep">High</option>
+                <option value="medium" className="bg-cosmos-deep">Medium</option>
+                <option value="low" className="bg-cosmos-deep">Low</option>
+              </select>
+            </label>
+
             {/* Mobile Hamburger Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden p-2 rounded-xl text-space-muted hover:text-white bg-space-blue/30 border border-white/10"
-              aria-label="Toggle mobile menu"
+              aria-label="Toggle chapter menu"
+              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -163,8 +177,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="lg:hidden mt-2 glass-panel rounded-2xl p-4 border border-space-cyan/20 animate-fadeIn">
             <div className="grid grid-cols-2 gap-2">
               {navLinks.map((link) => {
-                const Icon = link.icon;
-                const isActive = currentSectionId === link.id;
+                const isActive = activeChapter === link.number;
                 return (
                   <button
                     key={link.id}
@@ -178,7 +191,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         : 'text-space-muted hover:text-white hover:bg-space-blue/30'
                     }`}
                   >
-                    <Icon className="w-4 h-4" />
+                    <span className="text-cosmos-cyan/80">{String(link.number).padStart(2, '0')}</span>
                     <span>{link.label}</span>
                   </button>
                 );
@@ -188,13 +201,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         )}
       </div>
 
-      {/* Real-time Scroll Progress Bar at Bottom of Navbar */}
-      <div className="w-full h-[2px] bg-space-blue/40 mt-2">
-        <div
-          className="h-full bg-gradient-to-r from-space-cyan via-space-purple to-space-accent transition-all duration-150 ease-out shadow-[0_0_8px_#48CFFF]"
-          style={{ width: `${Math.round(scrollProgress * 100)}%` }}
-        />
-      </div>
     </header>
   );
 };

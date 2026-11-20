@@ -94,3 +94,62 @@
   background-size: 100% 3px, 6px 100%;
   pointer-events: none;
 }
+
+/* ───────────── v2 design system ───────────── */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+body { background: #03040A; color: #EEF2FA; }
+
+/* Minimal uppercase chapter label */
+.chapter-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #929CAF;
+}
+
+/* Large cinematic heading */
+.cinematic-heading {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  font-size: clamp(3rem, 9vw, 8.5rem);
+}
+
+/* Readable copy over 3D backgrounds */
+.readable { text-shadow: 0 1px 18px rgba(3, 4, 10, 0.85); }
+
+/* Visible keyboard focus everywhere */
+:focus-visible {
+  outline: 2px solid #69D9EF;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+section:focus { outline: none; }
+
+/* Desktop ring cursor */
+.cosmic-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  width: 28px; height: 28px;
+  margin: -14px 0 0 -14px;
+  border: 1px solid rgba(238, 242, 250, 0.45);
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 90;
+  mix-blend-mode: difference;
+  transition: width .3s, height .3s, margin .3s, border-color .3s;
+}
+.cosmic-cursor[data-hover='true'] {
+  width: 48px; height: 48px; margin: -24px 0 0 -24px;
+  border-color: #69D9EF;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}

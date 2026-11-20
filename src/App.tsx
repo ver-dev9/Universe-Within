@@ -1,4 +1,8 @@
 import React, { useState, useCallback } from 'react';
+import { LoadingScreen } from './components/loading/LoadingScreen';
+import { ScrollProgressBar } from './components/navigation/ScrollProgressBar';
+import { ChapterRail } from './components/navigation/ChapterRail';
+import { CustomCursor } from './components/interactive/CustomCursor';
 import { CosmicCanvas } from './scenes/CosmicCanvas';
 import { Navbar } from './components/layout/Navbar';
 import { HudTelemetry } from './components/layout/HudTelemetry';
@@ -20,8 +24,8 @@ export function App() {
   const [hasEntered, setHasEntered] = useState<boolean>(false);
   const [selectedPlanet, setSelectedPlanet] = useState<PlanetData>(PLANETS_DATA[2]); // Default to Earth
 
-  const { scrollProgress, currentSectionId, scrollToSection } = useScrollProgress();
   const { isReducedMotion, toggleReducedMotion } = useReducedMotion();
+  const { currentSectionId, scrollToSection } = useScrollProgress();
   const audioEngine = useAudioEngine();
 
   const handleEnterUniverse = useCallback(() => {
@@ -47,26 +51,31 @@ export function App() {
   }, [audioEngine, scrollToSection]);
 
   return (
-    <div className="relative min-h-screen bg-[#03050B] text-[#F5F8FF] selection:bg-[#48CFFF]/30">
+    <div className="relative min-h-screen bg-cosmos-void text-cosmos-white selection:bg-cosmos-cyan/30">
+      <a
+        href="#main-journey"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[110] focus:px-4 focus:py-2 focus:bg-cosmos-deep focus:text-cosmos-white"
+      >
+        Skip to content
+      </a>
+      <LoadingScreen />
+      <ScrollProgressBar />
+      <CustomCursor />
       {/* Three.js 3D Cosmic Background Canvas */}
       <CosmicCanvas
         currentSectionId={currentSectionId}
-        scrollProgress={scrollProgress}
         selectedPlanet={selectedPlanet}
         onSelectPlanet={handleSelectPlanet}
         reducedMotion={isReducedMotion}
       />
 
       {/* Floating HUD Telemetry Overlay */}
-      <HudTelemetry
-        currentSectionId={currentSectionId}
-        scrollProgress={scrollProgress}
-      />
+      <HudTelemetry currentSectionId={currentSectionId} />
+      <ChapterRail onNavigate={scrollToSection} />
 
       {/* Navigation Header */}
       <Navbar
         currentSectionId={currentSectionId}
-        scrollProgress={scrollProgress}
         onNavigate={scrollToSection}
         audioPlaying={audioEngine.isPlaying}
         onToggleAudio={audioEngine.toggleSound}
@@ -77,7 +86,7 @@ export function App() {
       />
 
       {/* Main Scroll Journey Container */}
-      <main className="relative z-10">
+      <main id="main-journey" className="relative z-10">
         {/* Section 01: Cinematic Introduction */}
         <Section01Intro
           onEnter={handleEnterUniverse}

@@ -1,66 +1,64 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
+import { ScrollTrigger, initSmoothScroll, destroySmoothScroll, scrollToId, getLenis } from '../animations/smoothScroll';
+import { SECTION_ORDER } from '../data/chapters';
+import { scrollState, useCosmosStore, selectReducedMotion } from '../store/useCosmosStore';
 
+/**
+ * Drives the scroll system:
+ *  - Lenis smooth scroll (disabled under reduced motion)
+ *  - one ScrollTrigger per section that updates the active section only when it changes
+ *  - a page-level trigger writing progress into `scrollState` (no React state)
+ */
 export function useScrollProgress() {
-  const [scrollProgress, setScrollProgress] = useState<number>(0);
-  const [currentSectionId, setCurrentSectionId] = useState<string>('intro');
+  const reducedMotion = useCosmosStore(selectReducedMotion);
+  const activeSection = useCosmosStore((s) => s.activeSection);
+  const setActiveSection = useCosmosStore((s) => s.setActiveSection);
 
   useEffect(() => {
-    let ticking = false;
+    const lenis = initSmoothScroll(reducedMotion);
 
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-          const currentScroll = window.scrollY;
-          const progress = totalHeight > 0 ? Math.min(Math.max(currentScroll / totalHeight, 0), 1) : 0;
-          setScrollProgress(progress);
+    const triggers: ScrollTrigger[] = [];
 
-          // Detect active section based on scroll offset
-          const sections = [
-            'intro',
-            'deep-space',
-            'solar-system',
-            'planet-exploration',
-            'earth-special',
-            'beyond-planets',
-            'scale-universe',
-            'discoveries',
-            'final-vista'
-          ];
+    triggers.push(
+      ScrollTrigger.create({
+        start: 0,
+        end: 'max',
+        onUpdate: (self) => {
+          scrollState.progress = self.progress;
+          scrollState.velocity = lenis ? lenis.velocity : self.getVelocity() / 60;
+        },
+      }),
+    );
 
-          for (const id of sections) {
-            const el = document.getElementById(id);
-            if (el) {
-              const rect = el.getBoundingClientRect();
-              if (rect.top <= window.innerHeight * 0.45 && rect.bottom >= window.innerHeight * 0.25) {
-                setCurrentSectionId(id);
-                break;
-              }
-            }
-          }
+    SECTION_ORDER.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      triggers.push(
+        ScrollTrigger.create({
+          trigger: el,
+          start: 'top 55%',
+          end: 'bottom 55%',
+          onToggle: (self) => self.isActive && setActiveSection(id),
+          onUpdate: (self) => {
+            if (self.isActive) scrollState.sectionProgress = self.progress;
+          },
+        }),
+      );
+    });
 
-          ticking = false;
-        });
-        ticking = true;
-      }
+    // Fonts and lazy content change layout; re-measure once things settle.
+    const refresh = () => ScrollTrigger.refresh();
+    window.addEventListener('load', refresh);
+    document.fonts?.ready.then(refresh).catch(() => undefined);
+
+    return () => {
+      window.removeEventListener('load', refresh);
+      triggers.forEach((t) => t.kill());
+      destroySmoothScroll();
     };
+  }, [reducedMotion, setActiveSection]);
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+  const scrollToSection = useCallback((sectionId: string) => scrollToId(sectionId), []);
 
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToSection = useCallback((sectionId: string) => {
-    const el = document.getElementById(sectionId);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, []);
-
-  return {
-    scrollProgress,
-    currentSectionId,
-    scrollToSection,
-  };
+  return { currentSectionId: activeSection, scrollToSection, getLenis };
 }

@@ -7,19 +7,32 @@ export default {
   theme: {
     extend: {
       colors: {
+        // v2 design system — "Universe Within" cosmic palette
+        cosmos: {
+          void: '#03040A',
+          deep: '#080B16',
+          blue: '#3478D4',
+          violet: '#8A5BCA',
+          cyan: '#69D9EF',
+          gold: '#E7B86B',
+          white: '#EEF2FA',
+          muted: '#929CAF',
+        },
+        // v1 tokens, remapped onto the v2 palette so existing sections inherit it
         space: {
-          darkest: '#03050B',
-          darker: '#080D18',
+          darkest: '#03040A',
+          darker: '#080B16',
           blue: '#101B36',
-          cyan: '#48CFFF',
-          purple: '#8D62FF',
-          white: '#F5F8FF',
-          muted: '#9BA9C0',
-          accent: '#00F0FF',
-          gold: '#FFD166',
+          cyan: '#69D9EF',
+          purple: '#8A5BCA',
+          white: '#EEF2FA',
+          muted: '#929CAF',
+          accent: '#69D9EF',
+          gold: '#E7B86B',
         }
       },
       fontFamily: {
+        display: ['"Instrument Serif"', 'Georgia', 'serif'],
         heading: ['"Space Grotesk"', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'monospace'],

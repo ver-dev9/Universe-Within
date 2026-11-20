@@ -17,6 +17,17 @@ export default defineConfig({
     host: true,
   },
   build: {
-    chunkSizeWarningLimit: 1600,
+    chunkSizeWarningLimit: 900,
+    rollupOptions: {
+      output: {
+        // Keep the heavy 3D runtime in its own long-cached chunks.
+        manualChunks: {
+          three: ['three'],
+          r3f: ['@react-three/fiber', '@react-three/drei'],
+          postfx: ['@react-three/postprocessing', 'postprocessing'],
+          motion: ['gsap', 'lenis'],
+        },
+      },
+    },
   },
 });

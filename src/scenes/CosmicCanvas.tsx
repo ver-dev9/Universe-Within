@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, Suspense } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { Starfield } from '../components/effects/Starfield';
@@ -7,10 +7,13 @@ import { SunMesh } from '../components/planets/SunMesh';
 import { PlanetMesh } from '../components/planets/PlanetMesh';
 import { BlackHoleEffect } from '../components/effects/BlackHoleEffect';
 import { PLANETS_DATA, PlanetData } from '../data/planetsData';
+import { PerformanceMonitor, AdaptiveDpr } from '@react-three/drei';
+import { PostEffects } from './PostEffects';
+import { QUALITY_PROFILES, QUALITY_ORDER } from '../utils/quality';
+import { useCosmosStore } from '../store/useCosmosStore';
 
 interface CosmicCanvasProps {
   currentSectionId: string;
-  scrollProgress: number;
   selectedPlanet: PlanetData | null;
   onSelectPlanet: (planet: PlanetData) => void;
   reducedMotion: boolean;
@@ -93,29 +96,44 @@ function CameraRig({
 
 export const CosmicCanvas: React.FC<CosmicCanvasProps> = ({
   currentSectionId,
-  scrollProgress,
   selectedPlanet,
   onSelectPlanet,
   reducedMotion,
 }) => {
+  const quality = useCosmosStore((s) => s.quality);
+  const qualityLocked = useCosmosStore((s) => s.qualityLocked);
+  const setQuality = useCosmosStore((s) => s.setQuality);
+  const profile = QUALITY_PROFILES[quality];
+
+  // Step quality down when the GPU can't hold frame rate (never up past the visitor's choice).
+  const stepDown = () => {
+    if (qualityLocked) return;
+    const i = QUALITY_ORDER.indexOf(quality);
+    if (i > 0) setQuality(QUALITY_ORDER[i - 1]);
+  };
+
   return (
     <div className="fixed inset-0 w-full h-full z-0 pointer-events-auto">
       <Canvas
         camera={{ position: [0, 60, 140], fov: 48, near: 0.1, far: 2000 }}
         gl={{
-          antialias: true,
+          antialias: profile.antialias,
           powerPreference: 'high-performance',
-          alpha: true,
+          alpha: false,
+          stencil: false,
         }}
-        dpr={[1, 2]}
+        dpr={profile.dpr}
+        aria-hidden="true"
       >
-        <color attach="background" args={['#03050B']} />
+        <PerformanceMonitor onDecline={stepDown} flipflops={2} />
+        <AdaptiveDpr pixelated={false} />
+        <color attach="background" args={['#03040A']} />
 
         {/* Ambient & Star Lighting */}
         <ambientLight intensity={0.22} />
 
         {/* Procedural Starfield */}
-        <Starfield count={5000} radius={750} reducedMotion={reducedMotion} />
+        <Starfield count={profile.starCount} radius={750} reducedMotion={reducedMotion} />
 
         {/* Volumetric Nebula Dust Clouds */}
         <NebulaDust reducedMotion={reducedMotion} />
@@ -149,6 +167,10 @@ export const CosmicCanvas: React.FC<CosmicCanvasProps> = ({
         <group position={[0, 0, -160]}>
           <BlackHoleEffect reducedMotion={reducedMotion} />
         </group>
+
+        <Suspense fallback={null}>
+          <PostEffects />
+        </Suspense>
       </Canvas>
     </div>
   );

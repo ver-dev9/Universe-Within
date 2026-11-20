@@ -1,14 +1,12 @@
 import React, { useMemo } from 'react';
-import { Radio, Activity, Navigation, Compass } from 'lucide-react';
+import { Radio, Activity, Navigation } from 'lucide-react';
 
 interface HudTelemetryProps {
   currentSectionId: string;
-  scrollProgress: number;
 }
 
 export const HudTelemetry: React.FC<HudTelemetryProps> = ({
   currentSectionId,
-  scrollProgress,
 }) => {
   const telemetry = useMemo(() => {
     switch (currentSectionId) {
@@ -56,7 +54,7 @@ export const HudTelemetry: React.FC<HudTelemetryProps> = ({
         return {
           sector: 'SECTOR 05 // RELATIVISTIC SINGULARITY',
           coords: 'RA: 17h 45m 40s | DEC: -29° 00′ 28″',
-          velocity: '0.45 c (ISCO Infall Accretion)',
+          velocity: 'ESCAPE VELOCITY AT HORIZON = c',
           status: 'EVENT HORIZON CAUTION',
           target: 'SUPERMASSIVE SINGULARITY',
         };
@@ -80,7 +78,7 @@ export const HudTelemetry: React.FC<HudTelemetryProps> = ({
       default:
         return {
           sector: 'SECTOR 08 // COSMIC HORIZON VISTA',
-          coords: 'HUBBLE RADIUS: 46.5 BLY',
+          coords: 'OBSERVABLE RADIUS ≈ 46.5 BLY (COMOVING)',
           velocity: 'H₀ = 67.4 km/s/Mpc',
           status: 'EXPANSION CONTINUOUS',
           target: 'UNIVERSE WITHIN',
@@ -110,21 +108,6 @@ export const HudTelemetry: React.FC<HudTelemetryProps> = ({
           <span className="font-bold tracking-widest">{telemetry.status}</span>
         </div>
         <div className="text-space-white/90">VELOCITY: {telemetry.velocity}</div>
-        <div className="text-[10px] text-space-cyan">
-          PROGRESS: {Math.round(scrollProgress * 100)}%
-        </div>
-      </div>
-
-      {/* Bottom Left Compass Coordinates */}
-      <div className="absolute bottom-8 left-8 font-mono text-[10px] text-space-muted/60 flex items-center gap-3">
-        <div className="flex items-center gap-1.5">
-          <Compass className="w-3.5 h-3.5 text-space-cyan/70" />
-          <span>SYS.VER: 3.8.4-R3F</span>
-        </div>
-        <span>|</span>
-        <span>LATENCY: 0.04 ms</span>
-        <span>|</span>
-        <span>RENDERER: WEBGL 2.0</span>
       </div>
 
       {/* Bottom Right Scroll Indicator */}
