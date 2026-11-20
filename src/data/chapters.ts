@@ -3,9 +3,12 @@
  *
  * `sectionId` is the DOM id of the scroll section that renders the chapter.
  * `status` lets navigation show only chapters that are actually built, so the
- * site never advertises placeholder content while the upgrade is in progress.
+ * site never advertises placeholder content while the upgrade is in progress:
+ *  - `complete` — rebuilt to the v2 brief, built and inspected in a headless browser
+ *  - `live`     — rendered from carried-over v1 content, awaiting its v2 phase
+ *  - `planned`  — not built yet; hidden from navigation
  */
-export type ChapterStatus = 'live' | 'planned';
+export type ChapterStatus = 'complete' | 'live' | 'planned';
 
 export interface Chapter {
   number: number;
@@ -19,8 +22,8 @@ export interface Chapter {
 }
 
 export const CHAPTERS: Chapter[] = [
-  { number: 1, id: 'beginning', sectionId: 'intro', label: 'The Beginning', title: 'Universe Within', accent: '#69D9EF', status: 'live' },
-  { number: 2, id: 'solar-system', sectionId: 'solar-system', label: 'Our Solar System', title: 'Our Solar System', accent: '#E7B86B', status: 'live' },
+  { number: 1, id: 'beginning', sectionId: 'intro', label: 'The Beginning', title: 'Universe Within', accent: '#69D9EF', status: 'complete' },
+  { number: 2, id: 'solar-system', sectionId: 'solar-system', label: 'Our Solar System', title: 'Our Solar System', accent: '#E7B86B', status: 'complete' },
   { number: 3, id: 'sun', sectionId: 'sun', label: 'The Power of the Sun', title: 'The Power of the Sun', accent: '#E7B86B', status: 'planned' },
   { number: 4, id: 'worlds', sectionId: 'worlds', label: 'Worlds Beyond Earth', title: 'Worlds Beyond Earth', accent: '#3478D4', status: 'planned' },
   { number: 5, id: 'moons', sectionId: 'moons', label: 'The Moons', title: 'The Moons of the Solar System', accent: '#69D9EF', status: 'planned' },
@@ -62,6 +65,7 @@ export const SECTION_ORDER = [
   'final-vista',
 ] as const;
 
-export const liveChapters = () => CHAPTERS.filter((c) => c.status === 'live');
+/** Chapters shown in navigation (everything that renders). */
+export const liveChapters = () => CHAPTERS.filter((c) => c.status !== 'planned');
 export const chapterForSection = (sectionId: string) =>
   CHAPTERS.find((c) => c.number === SECTION_TO_CHAPTER[sectionId]);

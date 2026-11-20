@@ -2,6 +2,7 @@ import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { getPlanetTexture } from '../../utils/textureGenerators';
+import { blendedSunRadius, CINEMATIC_SUN_RADIUS, solarState } from '../../scenes/rigState';
 
 interface SunMeshProps {
   reducedMotion?: boolean;
@@ -11,6 +12,8 @@ export const SunMesh: React.FC<SunMeshProps> = ({ reducedMotion = false }) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const coronaRef = useRef<THREE.Mesh>(null);
   const flaresRef = useRef<THREE.Points>(null);
+  const scaleRef = useRef<THREE.Group>(null);
+  const haloMatRef = useRef<THREE.MeshBasicMaterial>(null);
 
   const texture = useMemo(() => getPlanetTexture('sun'), []);
 
@@ -38,6 +41,10 @@ export const SunMesh: React.FC<SunMeshProps> = ({ reducedMotion = false }) => {
   }, []);
 
   useFrame((state, delta) => {
+    // Cinematic vs relative-size Sun (true 109× Earth diameter) — blended, not rebuilt.
+    if (scaleRef.current) scaleRef.current.scale.setScalar(blendedSunRadius() / CINEMATIC_SUN_RADIUS);
+    // The wide red halo reads as a solid disc at true scale; fade it out there.
+    if (haloMatRef.current) haloMatRef.current.opacity = 0.16 * (1 - 0.85 * solarState.scaleBlend);
     if (!reducedMotion) {
       if (meshRef.current) {
         meshRef.current.rotation.y += delta * 0.04;
@@ -57,7 +64,8 @@ export const SunMesh: React.FC<SunMeshProps> = ({ reducedMotion = false }) => {
   return (
     <group position={[0, 0, 0]}>
       {/* Omni-directional solar light illuminating the solar system */}
-      <pointLight color="#FFF8E7" intensity={2.8} distance={300} decay={1.0} />
+      <pointLight color="#FFF8E7" intensity={2.8} distance={420} decay={1.0} />
+      <group ref={scaleRef}>
 
       {/* Sun Photosphere */}
       <mesh ref={meshRef}>
@@ -81,6 +89,7 @@ export const SunMesh: React.FC<SunMeshProps> = ({ reducedMotion = false }) => {
       <mesh>
         <sphereGeometry args={[7.2, 32, 32]} />
         <meshBasicMaterial
+          ref={haloMatRef}
           color="#FF4500"
           transparent
           opacity={0.16}
@@ -114,6 +123,7 @@ export const SunMesh: React.FC<SunMeshProps> = ({ reducedMotion = false }) => {
           depthWrite={false}
         />
       </points>
+      </group>
     </group>
   );
 };

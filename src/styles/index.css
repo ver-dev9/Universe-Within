@@ -153,3 +153,15 @@ section:focus { outline: none; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+/* Chapter 02 — 3D planet name labels (drei Html) */
+.planet-label {
+  color: #eef2fa;
+  text-shadow: 0 0 8px rgba(3, 4, 10, 0.95), 0 0 2px rgba(3, 4, 10, 1);
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(105, 217, 239, 0);
+}
+.planet-label[data-focused='true'] {
+  color: #69d9ef;
+  border-bottom-color: rgba(105, 217, 239, 0.8);
+}

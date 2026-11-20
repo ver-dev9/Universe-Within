@@ -1,5 +1,5 @@
 import React, { useRef, Suspense } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { Starfield } from '../components/effects/Starfield';
 import { NebulaDust } from '../components/effects/NebulaDust';
@@ -11,91 +11,32 @@ import { PerformanceMonitor, AdaptiveDpr } from '@react-three/drei';
 import { PostEffects } from './PostEffects';
 import { QUALITY_PROFILES, QUALITY_ORDER } from '../utils/quality';
 import { useCosmosStore } from '../store/useCosmosStore';
+import { CameraRig } from './CameraRig';
+import { IntroScene } from './IntroScene';
 
 interface CosmicCanvasProps {
-  currentSectionId: string;
   selectedPlanet: PlanetData | null;
   onSelectPlanet: (planet: PlanetData) => void;
   reducedMotion: boolean;
 }
 
-// Camera controller that smoothly interpolates position and lookAt target
-function CameraRig({
-  currentSectionId,
-  selectedPlanet,
-  reducedMotion,
-}: {
-  currentSectionId: string;
-  selectedPlanet: PlanetData | null;
-  reducedMotion: boolean;
-}) {
-  const { camera } = useThree();
-  const targetPos = useRef(new THREE.Vector3(0, 70, 150));
-  const lookAtTarget = useRef(new THREE.Vector3(0, 0, 0));
-  const currentLookAt = useRef(new THREE.Vector3(0, 0, 0));
-
-  useFrame((_, delta) => {
-    // Determine desired camera position and lookAt target according to active section
-    if (selectedPlanet && currentSectionId === 'planet-exploration') {
-      // Zoom close to chosen planet
-      const r = selectedPlanet.orbitRadius;
-      targetPos.current.set(r + 3.5, 1.8, 4.2);
-      lookAtTarget.current.set(r, 0, 0);
-    } else {
-      switch (currentSectionId) {
-        case 'intro':
-          targetPos.current.set(0, 45, 130);
-          lookAtTarget.current.set(0, 0, 0);
-          break;
-        case 'deep-space':
-          targetPos.current.set(0, 120, 200);
-          lookAtTarget.current.set(0, 10, -50);
-          break;
-        case 'solar-system':
-          targetPos.current.set(0, 55, 105);
-          lookAtTarget.current.set(20, 0, 0);
-          break;
-        case 'planet-exploration':
-          targetPos.current.set(36, 12, 38);
-          lookAtTarget.current.set(36, 0, 0);
-          break;
-        case 'earth-special':
-          targetPos.current.set(36 + 4.5, 1.2, 5.5);
-          lookAtTarget.current.set(36, 0, 0);
-          break;
-        case 'beyond-planets':
-          // Move camera to Black Hole sector at [0, 0, -160]
-          targetPos.current.set(0, 12, -125);
-          lookAtTarget.current.set(0, 0, -160);
-          break;
-        case 'scale-universe':
-          targetPos.current.set(0, 180, 260);
-          lookAtTarget.current.set(0, 0, 0);
-          break;
-        case 'discoveries':
-          targetPos.current.set(20, 40, 80);
-          lookAtTarget.current.set(0, 0, 0);
-          break;
-        case 'final-vista':
-        default:
-          targetPos.current.set(0, 30, 90);
-          lookAtTarget.current.set(0, 0, 0);
-          break;
-      }
-    }
-
-    // Smooth Lerp factor (higher speed if reduced motion is requested)
-    const lerpSpeed = reducedMotion ? 0.15 : Math.min(delta * 2.8, 0.1);
-    camera.position.lerp(targetPos.current, lerpSpeed);
-    currentLookAt.current.lerp(lookAtTarget.current, lerpSpeed);
-    camera.lookAt(currentLookAt.current);
+/** Solar system root — hidden during the Chapter 01 opening (the hero Earth owns that frame). */
+function SolarSystem({ reducedMotion, onSelectPlanet }: { reducedMotion: boolean; onSelectPlanet: (p: PlanetData) => void }) {
+  const ref = useRef<THREE.Group>(null);
+  useFrame(() => {
+    if (ref.current) ref.current.visible = useCosmosStore.getState().activeSection !== 'intro';
   });
-
-  return null;
+  return (
+    <group ref={ref}>
+      <SunMesh reducedMotion={reducedMotion} />
+      {PLANETS_DATA.map((planet, i) => (
+        <PlanetMesh key={planet.id} data={planet} index={i} reducedMotion={reducedMotion} onSelect={onSelectPlanet} showOrbit />
+      ))}
+    </group>
+  );
 }
 
 export const CosmicCanvas: React.FC<CosmicCanvasProps> = ({
-  currentSectionId,
   selectedPlanet,
   onSelectPlanet,
   reducedMotion,
@@ -138,30 +79,14 @@ export const CosmicCanvas: React.FC<CosmicCanvasProps> = ({
         {/* Volumetric Nebula Dust Clouds */}
         <NebulaDust reducedMotion={reducedMotion} />
 
-        {/* Dynamic Camera Animation Rig */}
-        <CameraRig
-          currentSectionId={currentSectionId}
-          selectedPlanet={selectedPlanet}
-          reducedMotion={reducedMotion}
-        />
+        {/* Single camera controller (scroll-scrubbed intro, fly-to, section poses) */}
+        <CameraRig selectedPlanet={selectedPlanet} reducedMotion={reducedMotion} />
 
-        {/* The Solar System Core */}
-        <group position={[0, 0, 0]}>
-          {/* Central Sun */}
-          <SunMesh reducedMotion={reducedMotion} />
+        {/* Chapter 01: glowing point -> hero Earth */}
+        <IntroScene reducedMotion={reducedMotion} />
 
-          {/* All 8 Major Planets */}
-          {PLANETS_DATA.map((planet) => (
-            <PlanetMesh
-              key={planet.id}
-              data={planet}
-              reducedMotion={reducedMotion}
-              onSelect={onSelectPlanet}
-              showOrbit={true}
-              isFocusMode={false}
-            />
-          ))}
-        </group>
+        {/* Chapter 02: Sun + 8 planets (cinematic / relative-size layouts) */}
+        <SolarSystem reducedMotion={reducedMotion} onSelectPlanet={onSelectPlanet} />
 
         {/* Section 06 Beyond Planets: Supermassive Black Hole System at [0, 0, -160] */}
         <group position={[0, 0, -160]}>

@@ -19,6 +19,7 @@ import { PLANETS_DATA, PlanetData } from './data/planetsData';
 import { useScrollProgress } from './hooks/useScrollProgress';
 import { useReducedMotion } from './hooks/useReducedMotion';
 import { useAudioEngine } from './hooks/useAudioEngine';
+import { useCosmosStore } from './store/useCosmosStore';
 
 export function App() {
   const [hasEntered, setHasEntered] = useState<boolean>(false);
@@ -31,14 +32,34 @@ export function App() {
   const handleEnterUniverse = useCallback(() => {
     setHasEntered(true);
     audioEngine.playWarpSound();
-    scrollToSection('deep-space');
-  }, [audioEngine, scrollToSection]);
+  }, [audioEngine]);
 
+  /**
+   * Planet selection from the 3D scene or the Chapter 02 selector.
+   * In Chapter 02 it flies the camera to the planet; in the planet chapter it
+   * just switches planet; anywhere else it brings the visitor to Chapter 02.
+   */
   const handleSelectPlanet = useCallback((planet: PlanetData) => {
     setSelectedPlanet(planet);
     audioEngine.playClickFeedback();
-    scrollToSection('planet-exploration');
+    const { activeSection, setFocusedPlanet } = useCosmosStore.getState();
+    setFocusedPlanet(planet.id);
+    if (activeSection !== 'solar-system' && activeSection !== 'planet-exploration') {
+      scrollToSection('solar-system');
+    }
   }, [audioEngine, scrollToSection]);
+
+  /** Section 04 switcher: change planet without leaving the section. */
+  const handleSwitchPlanet = useCallback((planet: PlanetData) => {
+    setSelectedPlanet(planet);
+    audioEngine.playClickFeedback();
+    useCosmosStore.getState().setFocusedPlanet(planet.id);
+  }, [audioEngine]);
+
+  const handleDeepDive = useCallback((planet: PlanetData) => {
+    setSelectedPlanet(planet);
+    scrollToSection('planet-exploration');
+  }, [scrollToSection]);
 
   const handleExploreAgain = useCallback(() => {
     audioEngine.playWarpSound();
@@ -63,7 +84,6 @@ export function App() {
       <CustomCursor />
       {/* Three.js 3D Cosmic Background Canvas */}
       <CosmicCanvas
-        currentSectionId={currentSectionId}
         selectedPlanet={selectedPlanet}
         onSelectPlanet={handleSelectPlanet}
         reducedMotion={isReducedMotion}
@@ -86,26 +106,21 @@ export function App() {
       />
 
       {/* Main Scroll Journey Container */}
-      <main id="main-journey" className="relative z-10">
+      {/* pointer-events-none lets clicks in empty areas reach the 3D canvas; sections opt back in */}
+      <main id="main-journey" className="relative z-10 pointer-events-none">
         {/* Section 01: Cinematic Introduction */}
-        <Section01Intro
-          onEnter={handleEnterUniverse}
-          onExploreClick={() => scrollToSection('deep-space')}
-        />
+        <Section01Intro onEnter={handleEnterUniverse} />
 
         {/* Section 02: Deep Space & Interstellar Void */}
         <Section02DeepSpace />
 
         {/* Section 03: The Solar System Revealed */}
-        <Section03SolarSystem
-          onSelectPlanet={handleSelectPlanet}
-          onExplorePlanetsClick={() => scrollToSection('planet-exploration')}
-        />
+        <Section03SolarSystem onSelectPlanet={handleSelectPlanet} onDeepDive={handleDeepDive} />
 
         {/* Section 04: Individual Planet Exploration */}
         <Section04PlanetExploration
           selectedPlanet={selectedPlanet}
-          onSelectPlanet={handleSelectPlanet}
+          onSelectPlanet={handleSwitchPlanet}
           onReturnToSolarSystem={() => scrollToSection('solar-system')}
         />
 

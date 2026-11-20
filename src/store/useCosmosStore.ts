@@ -18,6 +18,8 @@ export const scrollState = {
 const prefersReduced = () =>
   typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
+export type ScaleMode = 'cinematic' | 'relative';
+
 interface CosmosState {
   activeSection: string;
   quality: QualityLevel;
@@ -26,12 +28,18 @@ interface CosmosState {
   reducedMotionOverride: boolean | null;
   systemReducedMotion: boolean;
   hasLoaded: boolean;
+  /** Chapter 02 layout: compressed cinematic view or true size ratios. */
+  scaleMode: ScaleMode;
+  /** Planet the Chapter 02 camera is flying to / tracking (null = overview). */
+  focusedPlanetId: string | null;
 
   setActiveSection: (id: string) => void;
   setQuality: (q: QualityLevel, lock?: boolean) => void;
   toggleReducedMotion: () => void;
   setSystemReducedMotion: (v: boolean) => void;
   setLoaded: () => void;
+  setScaleMode: (m: ScaleMode) => void;
+  setFocusedPlanet: (id: string | null) => void;
 }
 
 export const useCosmosStore = create<CosmosState>((set, get) => ({
@@ -41,6 +49,8 @@ export const useCosmosStore = create<CosmosState>((set, get) => ({
   reducedMotionOverride: null,
   systemReducedMotion: prefersReduced(),
   hasLoaded: false,
+  scaleMode: 'cinematic',
+  focusedPlanetId: null,
 
   setActiveSection: (id) => {
     if (get().activeSection !== id) set({ activeSection: id });
@@ -52,6 +62,10 @@ export const useCosmosStore = create<CosmosState>((set, get) => ({
   },
   setSystemReducedMotion: (v) => set({ systemReducedMotion: v }),
   setLoaded: () => set({ hasLoaded: true }),
+  setScaleMode: (scaleMode) => set({ scaleMode }),
+  setFocusedPlanet: (focusedPlanetId) => {
+    if (get().focusedPlanetId !== focusedPlanetId) set({ focusedPlanetId });
+  },
 }));
 
 export const selectReducedMotion = (s: CosmosState) => s.reducedMotionOverride ?? s.systemReducedMotion;

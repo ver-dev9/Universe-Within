@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowLeft, ArrowRight, Compass, Shield, Wind, Thermometer, Orbit, Disc, CheckCircle } from 'lucide-react';
-import { PLANETS_DATA, PlanetData } from '../../data/planetsData';
+import { PLANETS_DATA, PlanetData, EARTH_DIAMETER_KM, AU_MILLION_KM } from '../../data/planetsData';
 
 interface Section04PlanetExplorationProps {
   selectedPlanet: PlanetData;
@@ -129,7 +129,7 @@ export const Section04PlanetExploration: React.FC<Section04PlanetExplorationProp
               {selectedPlanet.distanceFromSunMillionKm}M km
             </div>
             <div className="text-[9px] font-mono text-space-cyan">
-              {(selectedPlanet.distanceFromSunMillionKm / 149.6).toFixed(2)} AU
+              {(selectedPlanet.distanceFromSunMillionKm / AU_MILLION_KM).toFixed(2)} AU
             </div>
           </div>
 
@@ -142,7 +142,7 @@ export const Section04PlanetExploration: React.FC<Section04PlanetExplorationProp
               {selectedPlanet.actualDiameterKm.toLocaleString()} km
             </div>
             <div className="text-[9px] font-mono text-space-purple">
-              {(selectedPlanet.actualDiameterKm / 12742).toFixed(2)} × Earth
+              {(selectedPlanet.actualDiameterKm / EARTH_DIAMETER_KM).toFixed(2)} × Earth
             </div>
           </div>
 
@@ -181,7 +181,7 @@ export const Section04PlanetExploration: React.FC<Section04PlanetExplorationProp
               {selectedPlanet.orbitPeriodDays.toLocaleString()} Days
             </div>
             <p className="font-mono text-[9px] text-space-cyan">
-              {(selectedPlanet.orbitPeriodDays / 365.25).toFixed(2)} Earth Years
+              {(selectedPlanet.orbitPeriodDays / 365.256).toFixed(2)} Earth Years
             </p>
           </div>
           <div>

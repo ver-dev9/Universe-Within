@@ -16,7 +16,7 @@ export const Section05EarthSpecial: React.FC = () => {
         <div className="space-y-3 mb-6">
           <div className="inline-flex items-center gap-2 font-mono text-xs text-space-cyan tracking-widest uppercase">
             <Globe className="w-4 h-4" />
-            <span>CHAPTER 05 // THE BLUE OASIS</span>
+            <span>CHAPTER 02 // THE BLUE OASIS</span>
           </div>
           <h2 className="font-heading font-black text-3xl sm:text-5xl tracking-tight text-white">
             IN A VAST UNIVERSE, THIS IS OUR HOME.
