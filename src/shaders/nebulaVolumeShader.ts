@@ -119,6 +119,7 @@ export const NebulaVolumeShader = {
       float nearFade = smoothstep(0.6, 5.0, vDepth);
       float a = density * bound * nearFade * uOpacity * SLICE_WEIGHT;
       gl_FragColor = vec4(col * a * uIntensity, a);
+      #include <colorspace_fragment>
     }
   `,
 };

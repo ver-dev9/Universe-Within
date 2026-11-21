@@ -11,7 +11,7 @@ export const StellarSurfaceShader = {
     uTime: { value: 0 },
     uTemp: { value: 5800 },
     uTurbulence: { value: 0.5 },
-    uBrightness: { value: 1.6 },
+    uBrightness: { value: 1.1 },
   },
   vertexShader: /* glsl */ `
     varying vec3 vObjPos;
@@ -47,6 +47,7 @@ export const StellarSurfaceShader = {
       float limb = 0.35 + 0.65 * pow(mu, 0.55);
       col *= limb * uBrightness * (0.9 + cells * 0.25);
       gl_FragColor = vec4(col, 1.0);
+      #include <colorspace_fragment>
     }
   `,
 };
@@ -75,6 +76,7 @@ export const StellarGlowShader = {
       float d = length(vUv - 0.5) * 2.0;
       float a = pow(max(0.0, 1.0 - d), uFalloff) * uIntensity;
       gl_FragColor = vec4(blackbody(uTemp) * a, a);
+      #include <colorspace_fragment>
     }
   `,
 };

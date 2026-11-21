@@ -103,7 +103,7 @@ const CollapseCloud: React.FC<SceneProps & { count: number }> = ({ progress, cou
     if (!reducedMotion) u.uTime.value += delta;
     u.uCollapse.value = smoothstep(0.04, 0.3, p);
     u.uDisk.value = smoothstep(0.17, 0.3, p);
-    u.uOpacity.value = 1 - smoothstep(0.34, 0.48, p);
+    u.uOpacity.value = 1 - smoothstep(0.3, 0.39, p);
     u.uPixelRatio.value = dpr;
     if (ref.current) ref.current.visible = u.uOpacity.value > 0.01;
   });
@@ -181,7 +181,7 @@ const Star: React.FC<SceneProps> = ({ progress, mass, profile, reducedMotion }) 
 
     // Death flash: brief, bright for supernovae; gentle for planetary nebulae.
     const flashT = smoothstep(0.66, 0.7, p) * (1 - smoothstep(0.72, 0.8, p));
-    const flashI = mass === 'low' ? flashT * 0.35 : flashT * 2.2;
+    const flashI = mass === 'low' ? flashT * 0.35 : flashT * 1.6;
     flash.uniforms.uTemp.value = 12000;
     flash.uniforms.uIntensity.value = flashI;
     flash.uniforms.uFalloff.value = 1.6;
@@ -348,14 +348,18 @@ const CameraRig: React.FC<SceneProps> = ({ progress, mass, reducedMotion }) => {
     const cloud = 1 - smoothstep(0.05, 0.3, p);
     const blast = mass === 'low' ? smoothstep(0.66, 0.95, p) * 2.5 : smoothstep(0.66, 0.85, p) * 7;
     const remnant = smoothstep(0.85, 0.98, p) * (mass === 'low' ? 0 : 4);
-    const dist = 6.2 + radius * 1.6 + cloud * 5 + blast - remnant;
+    const dist = 6.2 + radius * 1.9 + cloud * 5 + blast - remnant;
     const t = state.clock.elapsedTime;
     const orbit = reducedMotion ? 0.35 : 0.35 + t * 0.03;
     const target = new THREE.Vector3(Math.sin(orbit) * dist, 0.9 + dist * 0.12, Math.cos(orbit) * dist);
     const k = reducedMotion ? 1 : 1 - Math.exp(-delta * 2.5);
     camera.position.lerp(target, k);
     // Keep the star right of centre on wide screens so the copy on the left stays clear.
-    camera.lookAt(-Math.min(2.2, state.viewport.aspect > 1.2 ? dist * 0.2 : 0), 0, 0);
+    // Offset along the camera's own right vector (not world x), so the star stays
+    // right of the copy wherever the slow orbit has carried the camera.
+    // Small offset only: copy sits left and the mass/colour panel right, so the gap is near centre.
+    const off = state.viewport.aspect > 1.2 ? Math.min(1.1, dist * 0.09) : 0;
+    camera.lookAt(-Math.cos(orbit) * off, 0, Math.sin(orbit) * off);
   });
   return null;
 };

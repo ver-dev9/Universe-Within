@@ -52,7 +52,11 @@ float snoise(vec3 v) {
 }
 `;
 
-/** Approximate blackbody colour (Tanner Helland fit), input kelvin, output linear-ish RGB 0..1. */
+/**
+ * Approximate blackbody colour (Tanner Helland fit), input kelvin. The fit is in
+ * sRGB, so it is converted to linear here (pow 2.2); shaders using it end with
+ * <colorspace_fragment> so the renderer / composer encodes it back once.
+ */
 export const BLACKBODY = /* glsl */ `
 vec3 blackbody(float kelvin) {
   float t = clamp(kelvin, 1000.0, 40000.0) / 100.0;
@@ -61,7 +65,7 @@ vec3 blackbody(float kelvin) {
     ? clamp(0.39008157 * log(t) - 0.63184144, 0.0, 1.0)
     : clamp(1.129890861 * pow(t - 60.0, -0.0755148492), 0.0, 1.0);
   float b = t >= 66.0 ? 1.0 : (t <= 19.0 ? 0.0 : clamp(0.543206789 * log(t - 10.0) - 1.19625408, 0.0, 1.0));
-  return vec3(r, g, b);
+  return pow(vec3(r, g, b), vec3(2.2));
 }
 `;
 

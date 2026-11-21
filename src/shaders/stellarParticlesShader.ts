@@ -13,6 +13,7 @@ const SOFT_POINT_FRAG = /* glsl */ `
     if (d > 1.0) discard;
     float a = pow(1.0 - d, 1.8) * vAlpha;
     gl_FragColor = vec4(vColor * a, a);
+    #include <colorspace_fragment>
   }
 `;
 
@@ -23,7 +24,7 @@ export const CollapseCloudShader = {
     uCollapse: { value: 0 },
     uDisk: { value: 0 },
     uOpacity: { value: 1 },
-    uSize: { value: 26 },
+    uSize: { value: 150 },
     uPixelRatio: { value: 1 },
     uColorA: { value: null as unknown },
     uColorB: { value: null as unknown },
@@ -58,8 +59,8 @@ export const CollapseCloudShader = {
       gl_Position = projectionMatrix * mv;
       gl_PointSize = uSize * uPixelRatio * (0.4 + aSeed.y) / -mv.z;
       float heat = smoothstep(2.5, 0.2, target) * k;
-      vColor = mix(uColorA, uColorB, clamp(aSeed.x * 0.6 + heat, 0.0, 1.0)) * (0.6 + heat * 1.6);
-      vAlpha = uOpacity * (0.25 + 0.75 * aSeed.z);
+      vColor = mix(uColorA, uColorB, clamp(aSeed.x * 0.6 + heat, 0.0, 1.0)) * (0.85 + heat * 0.45);
+      vAlpha = uOpacity * (0.2 + 0.6 * aSeed.z) * (1.0 - 0.45 * uDisk);
     }
   `,
   fragmentShader: SOFT_POINT_FRAG,
@@ -147,6 +148,7 @@ export const AccretionRingShader = {
       vec3 col = mix(vec3(1.0, 0.45, 0.12), vec3(1.0, 0.9, 0.7), smoothstep(0.9, 0.5, r)) * doppler * streaks;
       float a = band * uOpacity;
       gl_FragColor = vec4(col * a * 1.6, a);
+      #include <colorspace_fragment>
     }
   `,
 };

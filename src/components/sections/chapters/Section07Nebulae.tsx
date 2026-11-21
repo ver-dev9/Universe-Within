@@ -99,7 +99,14 @@ export const Section07Nebulae: React.FC = () => {
           )}
         </div>
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-cosmos-void/85 via-cosmos-void/30 to-transparent" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-cosmos-void/90 to-transparent" />
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2"
+          style={{
+            // Eased multi-stop fade: a plain two-stop gradient leaves a visible band at its top edge.
+            background:
+              'linear-gradient(to top, rgba(3,4,10,0.88) 0%, rgba(3,4,10,0.62) 22%, rgba(3,4,10,0.34) 45%, rgba(3,4,10,0.13) 68%, rgba(3,4,10,0.03) 86%, rgba(3,4,10,0) 100%)',
+          }}
+        />
 
         <div className="relative z-10 flex h-full flex-col justify-between px-5 pb-6 pt-20 sm:px-10 lg:px-16">
           <header className="max-w-2xl">
