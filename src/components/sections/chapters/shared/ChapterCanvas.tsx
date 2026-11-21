@@ -49,6 +49,9 @@ export function ChapterCanvas({ children, label, camera, invalidateRef, classNam
         <Canvas
           key={profile.antialias ? 'aa' : 'noaa'}
           dpr={profile.dpr}
+          // No tone mapping: the chapter shaders write display-ready colour, and
+          // standard materials (asteroids, nuclei) should match them.
+          flat
           frameloop={frameloop}
           gl={{ antialias: profile.antialias, powerPreference: 'high-performance', alpha: false }}
           camera={{

@@ -19,6 +19,8 @@ import { BackdropStars } from './BackdropStars';
 
 export const SUN_DIR = new THREE.Vector3(-0.75, 0.3, 0.6).normalize();
 const SPACING = 8;
+/** Hex → display (sRGB) values for raw ShaderMaterials, which write gl_FragColor without colour conversion. */
+const displayColor = (hex: string) => new THREE.Color(hex).convertLinearToSRGB();
 const STILL_TIME = 12;
 
 interface SurfaceConfig {
@@ -92,9 +94,9 @@ function ProceduralWorld({ cfg, segments, seed, reducedMotion }: { cfg: SurfaceC
   const mesh = useRef<THREE.Mesh>(null);
   const uniforms = useMemo(
     () => ({
-      uColorLow: { value: new THREE.Color(cfg.low) },
-      uColorHigh: { value: new THREE.Color(cfg.high) },
-      uColorAccent: { value: new THREE.Color(cfg.accent) },
+      uColorLow: { value: displayColor(cfg.low) },
+      uColorHigh: { value: displayColor(cfg.high) },
+      uColorAccent: { value: displayColor(cfg.accent) },
       uNoiseScale: { value: cfg.noiseScale },
       uCraterScale: { value: cfg.craterScale },
       uCraterDensity: { value: cfg.craterDensity },
@@ -113,7 +115,7 @@ function ProceduralWorld({ cfg, segments, seed, reducedMotion }: { cfg: SurfaceC
     () =>
       cfg.atmosphere
         ? {
-            uColor: { value: new THREE.Color(cfg.atmosphere.color) },
+            uColor: { value: displayColor(cfg.atmosphere.color) },
             uPower: { value: cfg.atmosphere.power },
             uStrength: { value: cfg.atmosphere.strength },
             uSunDir: { value: SUN_DIR },
@@ -263,7 +265,7 @@ function Comet({ particles, reducedMotion }: { particles: number; reducedMotion:
         uSpeed: { value: speed },
         uPixelRatio: { value: 1 },
         uSize: { value: size },
-        uColor: { value: new THREE.Color(color) },
+        uColor: { value: displayColor(color) },
         uOpacity: { value: opacity },
       },
       transparent: true,
@@ -272,7 +274,7 @@ function Comet({ particles, reducedMotion }: { particles: number; reducedMotion:
     });
   const ionMat = useMemo(() => makeTailMat('#7fd8ff', 9, 0.025, 0.0, 0.16, 5, 0.75), [tailDir, curveDir]); // eslint-disable-line react-hooks/exhaustive-deps
   const dustMat = useMemo(() => makeTailMat('#ffe2b0', 6.5, 0.11, 1.6, 0.07, 9, 0.5), [tailDir, curveDir]); // eslint-disable-line react-hooks/exhaustive-deps
-  const comaUniforms = useMemo(() => ({ uColor: { value: new THREE.Color('#bfe9ff') }, uStrength: { value: 0.9 }, uTime: { value: 0 } }), []);
+  const comaUniforms = useMemo(() => ({ uColor: { value: displayColor('#bfe9ff') }, uStrength: { value: 0.9 }, uTime: { value: 0 } }), []);
   const nucleusRef = useRef<THREE.Mesh>(null);
 
   useEffect(
