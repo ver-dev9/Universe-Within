@@ -86,6 +86,9 @@ export const HudTelemetry: React.FC<HudTelemetryProps> = ({
     }
   }, [currentSectionId]);
 
+  // v2 chapters carry their own headings; the legacy HUD would cover them.
+  if (['sun', 'worlds', 'moons', 'stars', 'nebulae'].includes(currentSectionId)) return null;
+
   return (
     <div className="pointer-events-none fixed inset-0 z-20 hidden md:block overflow-hidden">
       {/* Top Left Status Corner */}

@@ -114,7 +114,7 @@ export const NebulaVolumeShader = {
       vec3 col = mix(uColorA, uColorB, smoothstep(0.0, 0.9, density));
       col = mix(col, uColorC, clamp(heat, 0.0, 1.0) * 0.85);
       // Soft spherical bound so no slice edge is visible.
-      float bound = smoothstep(1.0, 0.75, max(abs(vP.x), abs(vP.y)));
+      float bound = smoothstep(1.0, 0.45, length(vP.xy));
       // Fade slices very close to the camera so fly-through has no popping.
       float nearFade = smoothstep(0.6, 5.0, vDepth);
       float a = density * bound * nearFade * uOpacity * SLICE_WEIGHT;

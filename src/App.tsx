@@ -11,6 +11,8 @@ import { Section02DeepSpace } from './components/sections/Section02DeepSpace';
 import { Section03SolarSystem } from './components/sections/Section03SolarSystem';
 import { Section04PlanetExploration } from './components/sections/Section04PlanetExploration';
 import { Section05EarthSpecial } from './components/sections/Section05EarthSpecial';
+import { Section03Sun, Section04Worlds, Section05Moons } from './components/sections/chapters';
+import { Section06Stars, Section06StarsElements, Section07Nebulae } from './components/sections/chapters/index-phase5';
 import { Section06BeyondPlanets } from './components/sections/Section06BeyondPlanets';
 import { Section07ScaleUniverse } from './components/sections/Section07ScaleUniverse';
 import { Section08Discoveries } from './components/sections/Section08Discoveries';
@@ -126,6 +128,14 @@ export function App() {
 
         {/* Section 05: Earth: Our Pale Blue Dot */}
         <Section05EarthSpecial />
+
+        {/* Chapters 03-07 */}
+        <Section03Sun />
+        <Section04Worlds />
+        <Section05Moons />
+        <Section06Stars />
+        <Section06StarsElements />
+        <Section07Nebulae />
 
         {/* Section 06: Beyond the Planets & Relativistic Black Hole */}
         <Section06BeyondPlanets />
