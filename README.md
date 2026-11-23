@@ -1,230 +1,121 @@
 # UNIVERSE WITHIN — A Journey Beyond the Visible
-### An Award-Worthy Cinematic 3D Interactive Universe Exploration Website
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/universe-within-3d)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Three.js](https://img.shields.io/badge/Three.js-r160-black.svg)](https://threejs.org/)
-[![React](https://img.shields.io/badge/React-18.3-61dafb.svg)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-3178c6.svg)](https://www.typescriptlang.org/)
-[![NASA Verified](https://img.shields.io/badge/NASA-Data%20Verified-red.svg)](https://science.nasa.gov/solar-system)
+**Explore the infinite. Discover the unknown.**
 
----
+An immersive, scroll-driven 3D astronomy experience: twelve cinematic chapters from Earth to the cosmic web, plus a six-tool interactive Cosmic Lab. Built with React, Three.js, React Three Fiber, custom GLSL shaders, GSAP ScrollTrigger and Lenis.
 
-## 1. Project Title & Identity
-**UNIVERSE WITHIN — A Journey Beyond the Visible**  
-*Core Tagline:* "A universe of billions of galaxies. An endless journey of discovery."  
-*Secondary Tagline:* "Look closer. Explore deeper. Discover the extraordinary."
+**Live site:** https://ver-dev9.github.io/Universe-Within/
 
-Developed as a flagship capstone project for university application and creative developer portfolio showcase.
+![Chapter 02 — Our Solar System](docs/screenshots/02-solar-system.jpg)
+
+> Screenshots in this README are real captures of the production build, taken in headless Chromium with software WebGL (SwiftShader). That forces the **LOW** quality tier and fallback fonts, so a GPU browser on MEDIUM/HIGH looks sharper and brighter.
 
 ---
 
-## 2. Project Overview
-**UNIVERSE WITHIN** is an interactive, scroll-driven 3D web experience that transports visitors through the cosmos. Bridging creative motion design with rigorous astronomical education, the project guides users seamlessly from the incandescent corona of the Sun through all eight major planets, into the fragile biosphere of Earth, across primordial debris belts, and into the relativistic event horizon of a supermassive black hole.
+## Vision
 
----
+Universe Within is a creative-development and science-communication portfolio project. The goal is to pair the feel of a space documentary with real interactivity, without sacrificing accuracy. Every astronomical figure in the experience comes from NASA, ESA, ESO, the NASA Exoplanet Archive or peer-reviewed papers, with its source linked on the page and in `src/data/`. Estimates are marked with ≈, and artistic visualizations are labelled as such.
 
-## 3. Vision and Objectives
-- **Cinematic Storytelling:** Combine the grandeur of space documentaries with the interactivity of modern WebGL 3D planetariums.
-- **Scientific Integrity:** Present strictly verified astronomical parameters and chemical compositions from NASA, ESA, JPL, STScI, and Caltech LIGO without synthetic or invented statistics.
-- **Architectural Excellence:** Eliminate fragile external network dependencies by using high-resolution procedural canvas textures, custom GLSL shaders, and a procedural Web Audio API binaural sound synthesizer.
-- **Accessibility & Performance:** Target a silky 60 FPS across desktop and mobile devices with native reduced-motion accessibility and keyboard navigation.
+## The twelve chapters
 
----
+| # | Chapter | What you can do |
+|---|---------|-----------------|
+| 01 | **The Beginning** | Cinematic opening over a procedural Earth |
+| 02 | **Our Solar System** | Orbiting system with fly-to planet selection; switch between *cinematic* and *relative size* modes. Planet deep-dives and an Earth chapter follow |
+| 03 | **The Power of the Sun** | Shader-driven photosphere, corona and solar-wind particles; core temperature, luminosity and structure facts |
+| 04 | **Worlds Beyond Earth** | Tabbed exploration of rocky worlds, dwarf planets, asteroids and comets with procedural surfaces |
+| 05 | **The Moons** | Europa, Io, Titan, Enceladus and more, each with ocean, volcanism or atmosphere notes |
+| 06 | **The Life and Death of Stars** | Scroll-pinned stellar life cycle by mass, from nebula to white dwarf, neutron star or black hole, plus where the elements come from |
+| 07 | **Nebulae** | Volumetric fly-throughs of the Orion, Eagle and other nebulae |
+| 08 | **Black Holes** | Real-time ray-marched black hole with an accretion disk, photon ring and Doppler beaming; event horizon, photon sphere, ISCO, Sgr A* and M87* |
+| 09 | **Galaxies Beyond Imagination** | Procedural particle galaxies: barred-spiral Milky Way, Andromeda, M87 elliptical, LMC-type irregular and the interacting Antennae |
+| 10 | **The Search for Other Worlds** | Transit lab whose light-curve dip follows depth ≈ (Rp/R★)²; a radial-velocity explainer; TRAPPIST-1, Proxima b, Kepler-186f, 51 Peg b and WASP-39b. Confirmed exoplanets: **6,473**, from the NASA Exoplanet Archive as of 19 Nov 2026 |
+| 11 | **The Architecture of the Universe** | Scroll zoom through a procedural cosmic web: Local Group, Virgo Supercluster, Laniakea, then the observable universe; Planck matter and energy budget |
+| 12 | **Beyond the Visible** | Finale and full scientific references |
 
-## 4. Screenshots Showcase
-```
-+-----------------------------------------------------------------------------+
-|                                                                             |
-|      [ SCREENSHOT: CHAPTER 01 — CINEMATIC INTRODUCTION & STARFIELD ]        |
-|                                                                             |
-+-----------------------------------------------------------------------------+
-|                                                                             |
-|      [ SCREENSHOT: CHAPTER 03 — INTERACTIVE 3D SOLAR SYSTEM ORBITS ]         |
-|                                                                             |
-+-----------------------------------------------------------------------------+
-|                                                                             |
-|      [ SCREENSHOT: CHAPTER 04 — PLANETARY OBSERVATORY & SPECTROMETRY ]      |
-|                                                                             |
-+-----------------------------------------------------------------------------+
-|                                                                             |
-|      [ SCREENSHOT: CHAPTER 06 — RELATIVISTIC BLACK HOLE ACCRETION DISK ]    |
-|                                                                             |
-+-----------------------------------------------------------------------------+
-```
+| | | |
+|---|---|---|
+| ![Sun](docs/screenshots/03-sun.jpg) | ![Worlds](docs/screenshots/04-worlds.jpg) | ![Moons](docs/screenshots/05-moons.jpg) |
+| ![Stars](docs/screenshots/06-stars.jpg) | ![Nebulae](docs/screenshots/07-nebulae.jpg) | ![Black holes](docs/screenshots/08-black-holes.jpg) |
+| ![Galaxies](docs/screenshots/09-galaxies.jpg) | ![Exoplanets](docs/screenshots/10-exoplanets.jpg) | ![Cosmic web](docs/screenshots/11-cosmic-web.jpg) |
 
----
+## Cosmic Lab
 
-## 5. Live Demo Link
-🌐 **Production URL:** `https://universe-within-3d.vercel.app` *(Placeholder for deployment)*
+A dedicated interactive laboratory (section `#cosmic-lab`). Each tool has real controls that drive the visualization, live readouts, a Reset button, an explanation and source links. Only one WebGL canvas is mounted at a time, and each tool is lazy-loaded.
 
----
+1. **Planet Explorer**: rotate and inspect planets; axial tilt and day length.
+2. **Solar System Explorer**: orbits under Kepler's third law (live P²/a³ ≈ 1), time speed, planet toggles.
+3. **Planetary Scale Comparison**: true relative sizes.
+4. **Stellar Explorer**: temperature drives blackbody colour; Wien peak; luminosity via Stefan–Boltzmann (L ∝ R²T⁴); Sun, Proxima Centauri, Sirius A/B, Betelgeuse and Rigel presets.
+5. **Black Hole Explorer**: mass slider with the Schwarzschild radius r_s = 2GM/c² computed live; inclination, disk temperature, brightness and lensing strength. Labelled an educational approximation.
+6. **Cosmic Distance Explorer**: log-scale zoom from the Earth–Moon distance to the observable universe, with light-travel time.
 
-## 6. Technology Stack
-- **Framework:** [React 18](https://react.dev) with [Vite 5](https://vitejs.dev)
-- **Language:** [TypeScript 5](https://www.typescriptlang.org) (Strict mode)
-- **3D Graphics:** [Three.js](https://threejs.org), [@react-three/fiber](https://docs.pmnd.rs/react-three-fiber), [@react-three/drei](https://github.com/pmndrs/drei)
-- **Shaders:** GLSL (Fresnel Rayleigh atmospheric scattering, solar corona turbulence, relativistic Doppler beaming)
-- **Scroll & Motion:** GSAP 3 (GreenSock), requestAnimationFrame lerp camera interpolation
-- **Styling:** [Tailwind CSS 3](https://tailwindcss.com) (Futuristic glassmorphism aesthetic)
-- **Icons:** [Lucide React](https://lucide.dev)
-- **Audio:** Web Audio API (procedural binaural drone synthesizer, zero MP3 assets needed)
+![Cosmic Lab](docs/screenshots/lab-cosmic-lab.jpg)
 
----
+## Technology stack
 
-## 7. Core Features
-1. **Chapter 01 — Cinematic Intro:** Ethereal dark opening, progressive starfield ignition, smooth 3D camera swoop.
-2. **Chapter 02 — Deep Space:** Multi-layered starfield with 5,000+ stars, volumetric nebula clouds, observable universe telemetry.
-3. **Chapter 03 — The Solar System Revealed:** Central glowing Sun with solar flare particles, 8 planets on elliptical orbits, artistic scaling disclaimers.
-4. **Chapter 04 — Planetary Observatory:** Close-up focal navigation for Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune. Complete physical parameters, day/year lengths, and atmospheric gas bar charts.
-5. **Chapter 05 — Earth: Our Pale Blue Dot:** High-resolution globe with oceans, continents, independent cloud layer, interactive Day/Night illumination switch (city lights), and Moon exploration modal.
-6. **Chapter 06 — Beyond the Planets:** Debris disks, nebulae, supernovae, and an interactive Black Hole with Schwarzschild event horizon, relativistic Doppler accretion disk, and photon sphere.
-7. **Chapter 07 — The Scale of the Universe:** Interactive logarithmic zoom comparison from human scale (1.7m) across 27 orders of magnitude to the observable horizon (8.8×10²⁶m).
-8. **Chapter 08 — Cosmic Discoveries:** Filterable discovery cards for JWST, Hubble, Voyager 1 & 2, Mars Rovers, Exoplanets, Gravitational Waves (LIGO), and Dark Matter.
-9. **Chapter 09 — Final Vista & References:** Philosophical conclusion, scientific sources, repository details, and developer portfolio credits.
+- **React 18 + TypeScript 5**, built with **Vite 5**
+- **Three.js r160**, **@react-three/fiber 8**, **@react-three/drei 9**, **@react-three/postprocessing**
+- **Custom GLSL**: photosphere, stellar surfaces, nebula volumes, black-hole ray-marcher, world surfaces, particle systems
+- **GSAP 3 ScrollTrigger + Lenis** for smooth, scroll-driven per-chapter timelines, cleaned up on unmount
+- **Zustand** for global state (quality tier, audio, reduced motion); **Tailwind CSS 3** design tokens
+- **GitHub Actions → GitHub Pages** for deployment from `main`
 
----
+## Architecture
 
-## 8. Project Architecture
 ```
 src/
-├── components/
-│   ├── effects/          # Starfield, NebulaDust, AtmosphereGlow, BlackHoleEffect
-│   ├── layout/           # Navbar, HudTelemetry, Footer
-│   ├── planets/          # PlanetMesh, SunMesh, EarthGlobe, SaturnRing
-│   └── sections/         # Chapters 01 through 09
-├── data/                 # planetsData, astronomicalFacts, discoveriesData, scaleData, sourcesData
-├── hooks/                # useScrollProgress, useReducedMotion, useAudioEngine
-├── scenes/               # CosmicCanvas (Three.js Canvas & Camera Rig)
-├── shaders/              # atmosphereShader, sunShader, blackHoleShader, nebulaShader
-├── styles/               # index.css (Glassmorphism, custom scrollbar, animations)
-├── utils/                # textureGenerators (procedural 1024x512 canvas bitmaps)
-├── App.tsx               # Root master application orchestrator
-└── main.tsx              # React DOM entry point
+  App.tsx                      chapter order
+  components/
+    sections/                  v1-derived sections (intro, solar system, planets, Earth, finale)
+    sections/chapters/         v2 chapters 03–11 (+ shared ChapterCanvas, SourceList, useInView)
+    navigation/, layout/       chapter rail, navbar, progress bar
+  lab/                         Cosmic Lab and its six tools (lazy-loaded)
+  scenes/                      R3F scenes per chapter (sun, nebulae, black-holes, galaxies, exoplanets, cosmicweb…)
+  shaders/                     GLSL as TS modules
+  data/                        sourced astronomical data, with a URL for every figure
+  store/, hooks/               zustand store, quality, reduced-motion, scroll hooks
+docs/screenshots/              real captures used in this README
 ```
 
----
+Each chapter mounts its own canvas only near the viewport (IntersectionObserver), reads the quality tier, and disposes geometry, materials and ScrollTriggers when it unmounts.
 
-## 9. Installation Instructions
-Ensure Node.js 18+ is installed on your workstation.
+## Quality, accessibility and motion
+
+- **Quality tiers** LOW / MEDIUM / HIGH, picked automatically and switchable in the navbar. They scale particle counts, ray-march steps and post-processing.
+- **Reduced motion**: honours `prefers-reduced-motion` with static layouts and no auto-animation.
+- **Sound is muted by default.**
+- Keyboard-navigable tabs (arrows, Home/End), labelled sliders, visible focus and screen-reader descriptions of the 3D scenes.
+
+## Getting started
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-username/universe-within-3d.git
-cd universe-within-3d
-
-# Install dependencies
+git clone https://github.com/ver-dev9/Universe-Within.git
+cd Universe-Within
 npm install
+npm run dev        # http://localhost:5173
+npm run build      # type-check + production build into dist/
+npm run preview    # serve the production build
 ```
 
----
+Pushing to `main` runs `.github/workflows/deploy.yml`, which builds and publishes to GitHub Pages.
 
-## 10. Local Development Instructions
-To launch the local development server with Hot Module Replacement (HMR):
+## Scientific sources
 
-```bash
-npm run dev
-```
-Open your browser and navigate to `http://localhost:3000`.
+Key references: NASA Planetary Fact Sheets and NASA Science, the NASA Exoplanet Archive, ESA (Planck, Gaia), ESO and the Event Horizon Telescope (Sgr A*, M87*), and Tully et al. 2014, *Nature* 513 (Laniakea). Every figure is cited next to its data in `src/data/*.ts` and on the page; see also [SCIENTIFIC_SOURCES.md](SCIENTIFIC_SOURCES.md).
 
----
+## Known limitations
 
-## 11. Production Build Instructions
-Compile TypeScript definitions and bundle assets for high-performance production:
+- Galaxies look dim on the LOW tier; MEDIUM/HIGH are recommended on desktop GPUs.
+- 3D objects are procedural (shaders and particles) rather than GLB models.
+- The black-hole and cosmic-web visualizations are educational approximations, not simulations.
+- The mobile layout has not been fully tested yet; desktop is the primary target.
 
-```bash
-npm run build
-```
-Compiled bundles are emitted to the `/dist` directory.
+## Versions
 
----
+- **v2.0.0**: the twelve-chapter cinematic rebuild and the Cosmic Lab.
+- **v1.0.0**: the original site, preserved as a tag.
 
-## 12. Deployment Instructions
+## License
 
-### Deploy to Vercel (Recommended)
-```bash
-npm install -g vercel
-vercel
-```
-*Build Command:* `npm run build`  
-*Output Directory:* `dist`
-
-### Deploy to GitHub Pages
-1. In `vite.config.ts`, set `base: '/universe-within-3d/'`.
-2. Run `npm run build`.
-3. Push `/dist` to the `gh-pages` branch.
-
----
-
-## 13. 3D Rendering Architecture
-- **Procedural Canvas Textures:** Celestial surface maps (e.g. Earth oceans/continents, Jupiter Great Red Spot, Saturn ring opacity gradients) are synthesized in memory on HTML5 2D canvases, converting to `THREE.CanvasTexture` with mipmapping. This guarantees instant load times and zero network failure modes.
-- **Instanced Buffer Geometries:** The starfield coordinates and spectral temperatures (O, B, A, F, G, K, M stellar classes) utilize packed Float32Array buffers with single draw-call instancing.
-- **Dynamic DPR Management:** Canvas dpr is clamped to `[1, 2]` to maintain 60 FPS on high-density Retina and 4K displays.
-
----
-
-## 14. Scroll Animation Architecture
-The camera rig (`CameraRig` inside `CosmicCanvas.tsx`) calculates target positions and lookAt vectors based on the user's scroll depth and active section. Interpolation uses frame-rate independent exponential lerp smoothing (`camera.position.lerp(targetPos, lerpSpeed)`), preventing motion sickness while retaining responsive tactile feedback.
-
----
-
-## 15. Shader and VFX Implementation
-- **Atmospheric Rim Glow:** Fresnel shader calculates rim lighting:
-  $$\text{fresnel} = \left(1.0 - \max(\vec{N} \cdot \vec{V}, 0.0)\right)^{\text{power}}$$
-- **Relativistic Black Hole Disk:** Accounts for Doppler beaming where approaching disk matter exhibits increased apparent luminosity and blueshifted frequency, while receding matter undergoes gravitational redshift.
-
----
-
-## 16. Performance Optimization Techniques
-- Zero large uncompressed image/video downloads.
-- Single canvas multi-scene architecture.
-- Clean disposal of WebGL geometries and textures.
-- Debounced scroll tracking with `requestAnimationFrame`.
-- Sub-bass drone synthesized through Web Audio API nodes rather than streaming audio buffers.
-
----
-
-## 17. Accessibility Considerations
-- Fully compliant with `prefers-reduced-motion` media queries.
-- UI button to explicitly toggle Reduced Motion mode (disables continuous orbital rotation, eases camera speeds).
-- High-contrast typography (#F5F8FF on #03050B) exceeding WCAG AA standards.
-- Full keyboard navigation and semantic button landmarks.
-
----
-
-## 18. Scientific Data Sources
-1. **NASA Solar System Exploration:** Planetary physical measurements and atmospheric metrics.
-2. **NASA JPL Horizons System:** Ephemerides and orbital characteristics.
-3. **Space Telescope Science Institute (STScI):** JWST and Hubble deep field data.
-4. **Caltech LIGO Laboratory:** Gravitational wave merger strains and event horizon physics.
-5. **NASA Exoplanet Archive:** Extrasolar planetary parameters.
-
----
-
-## 19. Asset Credits & Licences
-- **3D Graphics & Code:** Original creative development by the author.
-- **Icons:** [Lucide Icons](https://lucide.dev) (ISC License).
-- **Fonts:** Space Grotesk (OFL), Inter (OFL), JetBrains Mono (OFL).
-
----
-
-## 20. Known Limitations
-- Celestial bodies use artistic scaling for orbit radii and relative diameters to permit simultaneous observation in WebGL screen space.
-- Black hole accretion disk simulation is scientifically inspired rather than a real-time Einstein field equation tensor solver.
-
----
-
-## 21. Future Improvements
-- WebXR virtual reality headset support for immersive stereoscopic viewing.
-- Real-time JPL Horizons API integration to query live positions of Voyager 1 and Mars rovers.
-- Interactive planetary moon systems (e.g. Jovian Galilean moons, Saturnian Titan and Enceladus).
-
----
-
-## 22. Contribution Guidelines
-Contributions, issues, and feature requests are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for details on submitting pull requests and code standards.
-
----
-
-## 23. Licence
-Distributed under the MIT License. See [LICENSE](LICENSE) for full details.
+MIT. See [LICENSE](LICENSE).
