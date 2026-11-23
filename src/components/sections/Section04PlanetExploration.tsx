@@ -28,7 +28,7 @@ export const Section04PlanetExploration: React.FC<Section04PlanetExplorationProp
   return (
     <section
       id="planet-exploration"
-      className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 lg:px-12 py-24 pointer-events-auto"
+      className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 lg:px-12 pt-36 pb-24 pointer-events-auto"
     >
       {/* Pinned to left ~42% max-w-lg, leaving the right side wide open to observe the 3D rotating planet */}
       <div className="max-w-lg w-full">
@@ -74,7 +74,7 @@ export const Section04PlanetExploration: React.FC<Section04PlanetExplorationProp
             </span>
           </div>
 
-          <h2 className="font-heading font-black text-3xl sm:text-4xl text-white mb-0.5">
+          <h2 className="font-display font-normal text-4xl sm:text-5xl text-cosmos-white mb-0.5">
             {selectedPlanet.name}
           </h2>
           <p className="font-mono text-xs text-space-cyan tracking-wider mb-3">

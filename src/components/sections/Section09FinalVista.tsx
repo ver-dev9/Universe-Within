@@ -14,21 +14,21 @@ export const Section09FinalVista: React.FC<Section09FinalVistaProps> = ({
   return (
     <section
       id="final-vista"
-      className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 lg:px-12 py-24 pointer-events-auto"
+      className="relative min-h-screen flex flex-col justify-center bg-gradient-to-b from-transparent via-cosmos-void/80 to-cosmos-void px-4 sm:px-6 lg:px-12 py-24 pointer-events-auto"
     >
       <div className="max-w-7xl mx-auto w-full space-y-16">
         {/* Philosophical Cosmic Conclusion */}
-        <div className="text-center space-y-6 max-w-4xl mx-auto pt-10">
+        <div className="relative text-center space-y-6 max-w-4xl mx-auto pt-10 before:absolute before:-inset-x-24 before:-inset-y-10 before:-z-10 before:rounded-full before:bg-cosmos-void/70 before:blur-3xl before:content-['']">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-space-blue/60 border border-space-cyan/30 text-space-cyan font-mono text-xs tracking-widest uppercase">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>CHAPTER 09 // COSMIC CONVERGENCE</span>
+            <span>Chapter 12 · Beyond the Visible</span>
           </div>
 
-          <h2 className="font-heading font-black text-4xl sm:text-6xl lg:text-7xl tracking-tight text-white leading-tight">
-            WE ARE NOT JUST LOOKING AT THE UNIVERSE.
+          <h2 className="font-display font-normal text-5xl sm:text-7xl lg:text-8xl tracking-tight text-cosmos-white leading-[1.02]">
+            We are not just looking at the universe.
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-space-cyan via-space-white to-space-purple text-glow-cyan">
-              WE ARE PART OF IT.
+            <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-cosmos-cyan via-cosmos-white to-cosmos-violet">
+              We are part of it.
             </span>
           </h2>
 
@@ -63,8 +63,8 @@ export const Section09FinalVista: React.FC<Section09FinalVistaProps> = ({
                 <ShieldCheck className="w-4 h-4" />
                 <span>Verified Scientific Attribution</span>
               </div>
-              <h3 className="font-heading font-bold text-2xl text-white">
-                SOURCES & ASTRONOMICAL REFERENCES
+              <h3 className="font-display font-normal text-3xl sm:text-4xl text-cosmos-white">
+                Sources &amp; astronomical references
               </h3>
             </div>
             <p className="font-mono text-xs text-space-muted max-w-sm">

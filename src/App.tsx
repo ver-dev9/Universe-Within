@@ -5,9 +5,7 @@ import { ChapterRail } from './components/navigation/ChapterRail';
 import { CustomCursor } from './components/interactive/CustomCursor';
 import { CosmicCanvas } from './scenes/CosmicCanvas';
 import { Navbar } from './components/layout/Navbar';
-import { HudTelemetry } from './components/layout/HudTelemetry';
 import { Section01Intro } from './components/sections/Section01Intro';
-import { Section02DeepSpace } from './components/sections/Section02DeepSpace';
 import { Section03SolarSystem } from './components/sections/Section03SolarSystem';
 import { Section04PlanetExploration } from './components/sections/Section04PlanetExploration';
 import { Section05EarthSpecial } from './components/sections/Section05EarthSpecial';
@@ -92,7 +90,6 @@ export function App() {
       />
 
       {/* Floating HUD Telemetry Overlay */}
-      <HudTelemetry currentSectionId={currentSectionId} />
       <ChapterRail onNavigate={scrollToSection} />
 
       {/* Navigation Header */}
@@ -112,9 +109,6 @@ export function App() {
       <main id="main-journey" className="relative z-10 pointer-events-none">
         {/* Section 01: Cinematic Introduction */}
         <Section01Intro onEnter={handleEnterUniverse} />
-
-        {/* Section 02: Deep Space & Interstellar Void */}
-        <Section02DeepSpace />
 
         {/* Section 03: The Solar System Revealed */}
         <Section03SolarSystem onSelectPlanet={handleSelectPlanet} onDeepDive={handleDeepDive} />

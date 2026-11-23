@@ -5,7 +5,6 @@ import { Starfield } from '../components/effects/Starfield';
 import { NebulaDust } from '../components/effects/NebulaDust';
 import { SunMesh } from '../components/planets/SunMesh';
 import { PlanetMesh } from '../components/planets/PlanetMesh';
-import { BlackHoleEffect } from '../components/effects/BlackHoleEffect';
 import { PLANETS_DATA, PlanetData } from '../data/planetsData';
 import { PerformanceMonitor, AdaptiveDpr } from '@react-three/drei';
 import { PostEffects } from './PostEffects';
@@ -90,7 +89,6 @@ export const CosmicCanvas: React.FC<CosmicCanvasProps> = ({
 
         {/* Section 06 Beyond Planets: Supermassive Black Hole System at [0, 0, -160] */}
         <group position={[0, 0, -160]}>
-          <BlackHoleEffect reducedMotion={reducedMotion} />
         </group>
 
         <Suspense fallback={null}>

@@ -62,7 +62,6 @@ export const SECTION_TO_CHAPTER: Record<string, number> = {
 /** Ordered list of section ids currently rendered on the page (scroll order). */
 export const SECTION_ORDER = [
   'intro',
-  'deep-space',
   'solar-system',
   'planet-exploration',
   'earth-special',

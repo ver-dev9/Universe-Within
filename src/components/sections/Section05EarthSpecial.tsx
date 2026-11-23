@@ -8,7 +8,7 @@ export const Section05EarthSpecial: React.FC = () => {
   return (
     <section
       id="earth-special"
-      className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 lg:px-12 py-24 pointer-events-auto"
+      className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 lg:px-12 pt-32 pb-24 pointer-events-auto"
     >
       {/* Pinned to left ~42% max-w-lg, leaving the right side wide open to observe 3D Earth */}
       <div className="max-w-lg w-full">
@@ -16,10 +16,10 @@ export const Section05EarthSpecial: React.FC = () => {
         <div className="space-y-3 mb-6">
           <div className="inline-flex items-center gap-2 font-mono text-xs text-space-cyan tracking-widest uppercase">
             <Globe className="w-4 h-4" />
-            <span>CHAPTER 02 // THE BLUE OASIS</span>
+            <span>Chapter 02 · The Blue Oasis</span>
           </div>
-          <h2 className="font-heading font-black text-3xl sm:text-5xl tracking-tight text-white">
-            IN A VAST UNIVERSE, THIS IS OUR HOME.
+          <h2 className="font-display font-normal text-4xl sm:text-6xl leading-[1.02] tracking-tight text-cosmos-white">
+            In a vast universe, <em className="text-cosmos-cyan">this is our home.</em>
           </h2>
           <p className="font-body text-space-muted text-sm sm:text-base">
             Suspended in the quiet darkness of the cosmos, Earth is an active biosphere harboring liquid oceans and an oxygenated shield.
