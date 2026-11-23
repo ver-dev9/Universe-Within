@@ -29,10 +29,10 @@ export const CHAPTERS: Chapter[] = [
   { number: 5, id: 'moons', sectionId: 'moons', label: 'The Moons', title: 'The Moons of the Solar System', accent: '#69D9EF', status: 'complete' },
   { number: 6, id: 'stars', sectionId: 'stars', label: 'Life & Death of Stars', title: 'The Life and Death of Stars', accent: '#E7B86B', status: 'complete' },
   { number: 7, id: 'nebulae', sectionId: 'nebulae', label: 'Nebulae', title: 'Nebulae: Cosmic Nurseries', accent: '#8A5BCA', status: 'complete' },
-  { number: 8, id: 'black-holes', sectionId: 'beyond-planets', label: 'Black Holes', title: 'Black Holes', accent: '#E7B86B', status: 'live' },
-  { number: 9, id: 'galaxies', sectionId: 'galaxies', label: 'Galaxies', title: 'Galaxies Beyond Imagination', accent: '#8A5BCA', status: 'planned' },
-  { number: 10, id: 'exoplanets', sectionId: 'discoveries', label: 'Other Worlds', title: 'The Search for Other Worlds', accent: '#69D9EF', status: 'live' },
-  { number: 11, id: 'cosmic-web', sectionId: 'scale-universe', label: 'Cosmic Architecture', title: 'The Architecture of the Universe', accent: '#3478D4', status: 'live' },
+  { number: 8, id: 'black-holes', sectionId: 'black-holes', label: 'Black Holes', title: 'Black Holes', accent: '#E7B86B', status: 'complete' },
+  { number: 9, id: 'galaxies', sectionId: 'galaxies', label: 'Galaxies', title: 'Galaxies Beyond Imagination', accent: '#8A5BCA', status: 'complete' },
+  { number: 10, id: 'exoplanets', sectionId: 'exoplanets', label: 'Other Worlds', title: 'The Search for Other Worlds', accent: '#69D9EF', status: 'complete' },
+  { number: 11, id: 'cosmic-web', sectionId: 'cosmic-web', label: 'Cosmic Architecture', title: 'The Architecture of the Universe', accent: '#3478D4', status: 'complete' },
   { number: 12, id: 'finale', sectionId: 'final-vista', label: 'Beyond the Visible', title: 'Beyond the Visible', accent: '#EEF2FA', status: 'live' },
 ];
 
@@ -51,9 +51,11 @@ export const SECTION_TO_CHAPTER: Record<string, number> = {
   moons: 5,
   stars: 6,
   nebulae: 7,
-  'beyond-planets': 8,
-  'scale-universe': 11,
-  discoveries: 10,
+  'black-holes': 8,
+  galaxies: 9,
+  exoplanets: 10,
+  'cosmic-web': 11,
+  'cosmic-lab': 11,
   'final-vista': 12,
 };
 
@@ -69,9 +71,11 @@ export const SECTION_ORDER = [
   'moons',
   'stars',
   'nebulae',
-  'beyond-planets',
-  'scale-universe',
-  'discoveries',
+  'black-holes',
+  'galaxies',
+  'exoplanets',
+  'cosmic-web',
+  'cosmic-lab',
   'final-vista',
 ] as const;
 

@@ -13,9 +13,9 @@ import { Section04PlanetExploration } from './components/sections/Section04Plane
 import { Section05EarthSpecial } from './components/sections/Section05EarthSpecial';
 import { Section03Sun, Section04Worlds, Section05Moons } from './components/sections/chapters';
 import { Section06Stars, Section06StarsElements, Section07Nebulae } from './components/sections/chapters/index-phase5';
-import { Section06BeyondPlanets } from './components/sections/Section06BeyondPlanets';
-import { Section07ScaleUniverse } from './components/sections/Section07ScaleUniverse';
-import { Section08Discoveries } from './components/sections/Section08Discoveries';
+import { Section08BlackHole, Section09Galaxies } from './components/sections/chapters/index-phase6';
+import { Section10Exoplanets, Section11CosmicWeb } from './components/sections/chapters/index-phase7';
+import { CosmicLab } from './lab/CosmicLab';
 import { Section09FinalVista } from './components/sections/Section09FinalVista';
 import { PLANETS_DATA, PlanetData } from './data/planetsData';
 import { useScrollProgress } from './hooks/useScrollProgress';
@@ -136,15 +136,11 @@ export function App() {
         <Section06Stars />
         <Section06StarsElements />
         <Section07Nebulae />
-
-        {/* Section 06: Beyond the Planets & Relativistic Black Hole */}
-        <Section06BeyondPlanets />
-
-        {/* Section 07: The Scale of the Universe */}
-        <Section07ScaleUniverse />
-
-        {/* Section 08: Cosmic Discoveries */}
-        <Section08Discoveries />
+        <Section08BlackHole />
+        <Section09Galaxies />
+        <Section10Exoplanets />
+        <Section11CosmicWeb />
+        <CosmicLab />
 
         {/* Section 09: Final Experience & Scientific Sources */}
         <Section09FinalVista
